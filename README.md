@@ -22,8 +22,8 @@ Download from the [releases](../../releases) page.
 
 - ONNX opset 17, static input size, basic graph optimizations applied.
 - The deformable convolutions of the decoder are expressed with standard operators
-  (Gather, MatMul) instead of `DeformConv`/`GridSample`, so the models run on any
-  ONNX Runtime execution provider, DirectML included. Outputs match the PyTorch model.
+  (Gather, MatMul) rather than `DeformConv` or `GridSample`, which some execution
+  providers do not support. Outputs match the PyTorch model.
 
 ## License
 
