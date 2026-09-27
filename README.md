@@ -25,11 +25,13 @@ Download from the [releases](../../releases) page.
 - The deformable convolutions of the decoder are expressed with standard operators
   (Gather, MatMul) rather than `DeformConv` or `GridSample`, which some execution
   providers do not support. Outputs match the PyTorch model.
-- Float16 copies are checked against the float32 export on real images (mask IoU at 0.5).
-  In the v1 float16 file, the pixel indices of the deformable convolutions were computed
-  in float16, exact only up to 2048: the decoder sampled pixels beside the right ones and
-  masks were degraded. Since v2 they are computed in integers; the v2 float16 file matches
-  the float32 export (IoU ≥ 0.9998 on the test images).
+- In the v1 float16 file, the pixel indices of the deformable convolutions were computed
+  in float16 arithmetic, exact only up to 2048: on hardware running float16 (GPUs) the
+  decoder sampled pixels beside the right ones and masks were degraded. Since v2 they are
+  computed in integers: every cast to int64 in the graph takes a rounded value, never the
+  result of float16 arithmetic (checked on the exported file). Note that ONNX Runtime on the
+  CPU runs float16 graphs in float32, so comparing outputs on a CPU cannot show this kind
+  of error.
 
 ## License
 
